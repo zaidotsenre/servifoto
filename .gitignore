@@ -1,0 +1,65 @@
+# Global ignores
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build artifacts
+build/
+dist/
+
+# Specific to client folder
+client/node_modules/
+client/build/
+client/.env
+client/.env.local
+client/.env.development.local
+client/.env.production.local
+client/coverage/
+
+# Specific to server folder
+server/node_modules/
+server/uploads/ # Ignoring uploaded files; track in S3 or storage service
+server/.env
+server/.env.local
+server/.env.development.local
+server/.env.production.local
+
+# Ignore test coverage
+coverage/
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.bak
+
+# Ignore lockfiles if using one package manager across mono repo
+package-lock.json
+yarn.lock
+
+
+#ignore config
+server/config/config.json
