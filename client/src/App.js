@@ -1,16 +1,16 @@
 import React from 'react';
-import ImageUpload from './components/ImageUpload';
-import ImageGallery from './components/ImageGallery';
-import CollectionManager from './components/CollectionManager';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import CollectionView from './pages/CollectionView';
 
 const App = () => {
     return (
-        <div>
-            <h1>Servifoto</h1>
-            <ImageUpload onUploadSuccess={() => window.location.reload()} />
-            <ImageGallery />
-            <CollectionManager />
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/collections/:id" element={<CollectionView />} />
+            </Routes>
+        </Router>
     );
 };
 

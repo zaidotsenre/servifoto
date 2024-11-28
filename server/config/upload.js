@@ -1,46 +1,33 @@
+const { S3 } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-const AWS = require('aws-sdk');
 const path = require('path');
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-let storage;
-
-if (isProduction) {
-    // Configure AWS SDK
-    AWS.config.update({
+// Configure AWS S3 Client
+const s3 = new S3({
+    region: process.env.AWS_REGION,
+    credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
-    });
+    },
+});
 
-    const s3 = new AWS.S3();
+console.log('S3_BUCKET_NAME:', process.env.S3_BUCKET_NAME);
 
-    // S3 Storage
-    storage = multerS3({
-        s3,
-        bucket: process.env.S3_BUCKET_NAME,
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname });
-        },
-        key: (req, file, cb) => {
-            cb(null, `${Date.now()}-${file.originalname}`);
-        },
-    });
-} else {
-    // Local Storage
-    storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, 'server/uploads/');
-        },
-        filename: (req, file, cb) => {
-            cb(null, `${Date.now()}-${file.originalname}`);
-        },
-    });
-}
+// Multer S3 Storage Configuration
+const storage = multerS3({
+    s3,
+    bucket: process.env.S3_BUCKET_NAME,
+    metadata: (req, file, cb) => {
+        cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+        const uniqueName = `${Date.now()}-${path.basename(file.originalname)}`;
+        cb(null, `uploads/${uniqueName}`); // Prefixing with "uploads/" for organizational purposes
+    },
+});
 
-// File filter to validate file types
+// File Filter for Validation
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (allowedTypes.includes(file.mimetype)) {
