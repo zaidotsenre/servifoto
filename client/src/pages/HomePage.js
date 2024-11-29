@@ -31,7 +31,7 @@ const HomePage = () => {
                         // Use the first image as the thumbnail
                         setThumbnails((prev) => ({
                             ...prev,
-                            [collection.id]: `http://localhost:5000/${imagesResponse.data[0]?.filePath}`,
+                            [collection.id]: `${imagesResponse.data[0]?.filePath}`,
                         }));
                     }
                 } catch (error) {
