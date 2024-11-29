@@ -18,6 +18,9 @@ app.use(cors({
     methods: ['GET'], // Allowed methods
 }));
 
+// Preflight Request Handler
+app.options('*', cors()); // Handle preflight requests
+
 // Middleware
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
