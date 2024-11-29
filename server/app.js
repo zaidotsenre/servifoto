@@ -1,4 +1,3 @@
-require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,7 +12,11 @@ const restrictToSameHost = require('./middleware/restrictToSameHost');
 
 const app = express();
 
-app.use(cors());
+// Configure CORS
+app.use(cors({
+    origin: ['https://ecv-construction.com'], // Allow your React app
+    methods: ['GET'], // Allowed methods
+}));
 
 // Middleware
 app.use(bodyParser.json());
